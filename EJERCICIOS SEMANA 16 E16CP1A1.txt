@@ -1,0 +1,32 @@
+EJERCICIOS SEMANA 16 E16CP1A1
+Actividad 31 - Postgresql
+
+Ejercicio 1
+Crear base de datos en base a los requerimientos enviados por el cliente.
+1 CREATE DATABASE call_list;
+2 CREATE TABLE users(id SERIAL PRIMARY KEY,
+ first_name VARCHAR(20),
+ email VARCHAR(50));
+3 INSERT INTO users (first_name, email) VALUES ('Carlos', 'carlos@usuarios.cl');
+4 INSERT INTO users (first_name, email) VALUES ('Laura', 'laura@usuarios.cl');
+5 CREATE TABLE calls(id SERIAL PRIMARY KEY,
+ phone INTEGER,
+ date DATE,
+ user_id INTEGER REFERENCES users(id));
+6 ALTER TABLE users ADD COLUMN last_name VARCHAR(20);
+7 UPDATE users SET last_name = 'Ortiz' WHERE first_name = 'Carlos';
+8 UPDATE users SET last_name = 'Flores' WHERE first_name = 'Laura';
+9 INSERT INTO calls (phone, date, user_id) values (99885234, '2018-01-22', 2);
+ INSERT INTO calls (phone, date, user_id) values (99885234, '2018-02-23', 2);
+ INSERT INTO calls (phone, date, user_id) values (86990278, '2018-02-23', 2);
+ INSERT INTO calls (phone, date, user_id) values (99885234, '2018-03-15', 2);
+ INSERT INTO calls (phone, date, user_id) values (47901936, '2018-07-02', 2);
+ INSERT INTO calls (phone, date, user_id) values (53506541, '2018-10-02', 2); 
+10 INSERT INTO calls (phone, date, user_id) values (98123456, '2018-02-28', 1);
+ INSERT INTO calls (phone, date, user_id) values (99467888, '2018-5-10', 1);
+ INSERT INTO calls (phone, date, user_id) values (99467888, '2018-5-11', 1);
+ INSERT INTO calls (phone, date, user_id) values (66668256, '2018-08-17', 1);
+11 INSERT INTO users (first_name, email, last_name) VALUES ('Jessica', 'jessica@usuarios.cl', 'Gallardo');
+12 SELECT first_name, count(phone) FROM users FULL JOIN calls ON (users.id = calls.user_id) GROUP BY first_name;
+13 SELECT users.first_name, calls.date, calls.phone as phone_call FROM calls INNER JOIN users ON (calls.user_id = users.id) WHERE users.first_name = 'Carlos' ORDER BY date DESC;
+14 CREATE TABLE audit(id SERIAL PRIMARY KEY, reason VARCHAR(300), date timestamp DEFAULT CURRENT_TIMESTAMP, user_id INTEGER REFERENCES users (id), call_id INTEGER REFERENCES calls (id));
